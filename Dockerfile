@@ -16,7 +16,8 @@ RUN //composer.phar create-project --prefer-dist laravel/laravel /usr/share/ngin
 
 RUN chown -Rf www-data /usr/share/nginx/laravel && chgrp -R www-data /usr/share/nginx/laravel && chmod -R g+w /usr/share/nginx/laravel
 
-RUN echo "CREATE DATABASE laravel;" | mysql -uroot -p$MYSQLPASS
+RUN /usr/bin/mysqld_safe & sleep 10s \
+&& echo "CREATE DATABASE laravel;" | mysql -uroot -p$MYSQLPASS
 
 RUN sed -i -e "s/DB_DATABASE=homestead/DB_DATABASE=laravel/g" ${env_conf} && \
 sed -i -e "s/DB_USERNAME=homestead/DB_USERNAME=root/g" ${env_conf} && \
